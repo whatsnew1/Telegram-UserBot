@@ -33,34 +33,6 @@ async def permitpm(e):
             if not apprv and e.text != UNAPPROVED_MSG:
                 await e.reply(UNAPPROVED_MSG)
 
-                if NOTIF_OFF:
-                    await e.client.send_read_acknowledge(e.chat_id)
-                if e.chat_id not in COUNT_PM:
-                    COUNT_PM.update({e.chat_id: 1})
-                else:
-                    COUNT_PM[e.chat_id] = COUNT_PM[e.chat_id] + 1
-                if COUNT_PM[e.chat_id] > 4:
-                    await e.respond(
-                        "`You were spamming my Master's PM, which I don't like.`"
-                        "`I'mma Report Spam.`"
-                    )
-                    del COUNT_PM[e.chat_id]
-                    await e.client(BlockRequest(e.chat_id))
-                    await e.client(ReportSpamRequest(peer=e.chat_id))
-                    if LOGGER:
-                        name = await e.client.get_entity(e.chat_id)
-                        name0 = str(name.first_name)
-                        await e.client.send_message(
-                            LOGGER_GROUP,
-                            "["
-                            + name0
-                            + "](tg://user?id="
-                            + str(e.chat_id)
-                            + ")"
-                            + " was just another retarded nibba",
-                        )
-
-
 @register(outgoing=True, pattern="^.notifoff$")
 async def notifoff(e):
     global NOTIF_OFF
